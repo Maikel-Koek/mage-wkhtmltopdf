@@ -1159,7 +1159,7 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
      */
     public function setOutlineDepth(int $value = null)
     {
-        if (is_null($vaue)) {
+        if (is_null($value)) {
             $value = (int) Mage::getStoreConfig('pdf/adapter/outline_depth');
         }
 
