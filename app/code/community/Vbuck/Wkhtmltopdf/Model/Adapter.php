@@ -716,13 +716,13 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
      */
     public function setDocumentFooterFont($font = null)
     {
-        if (!$this->_isFontSupported($value)) {
-            $this->_addError(sprintf('Font "%s" not supported, using default.', $value));
+        if (!$this->_isFontSupported($font)) {
+            $this->_addError(sprintf('Font "%s" not supported, using default.', $font));
 
             $value = Mage::getStoreConfig('pdf/adapter/footer_font');
         }
 
-        $this->setOption('footer-font-name', $value);
+        $this->setOption('footer-font-name', $font);
 
         return $this;
     }
