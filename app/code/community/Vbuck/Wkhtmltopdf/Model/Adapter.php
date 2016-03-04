@@ -730,11 +730,11 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
     /**
      * Set the document footer font size.
      * 
-     * @param int $size The font size in points.
+     * @param int|bool $size The font size in points.
      *
      * @return Vbuck_Wkhtmltopdf_Model_Adapter
      */
-    public function setDocumentFooterFontSize(int $size)
+    public function setDocumentFooterFontSize($size = false)
     {
         if (!$size) {
             $size = (int) Mage::getStoreConfig('pdf/adapter/footer_font_size');
@@ -798,11 +798,11 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
     /**
      * Set the document header font size.
      * 
-     * @param int $size The font size in points.
+     * @param int|bool $size The font size in points.
      *
      * @return Vbuck_Wkhtmltopdf_Model_Adapter
      */
-    public function setDocumentHeaderFontSize(int $size)
+    public function setDocumentHeaderFontSize($size = false)
     {
         if (!$size) {
             $size = (int) Mage::getStoreConfig('pdf/adapter/header_font_size');
@@ -1210,11 +1210,11 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
     /**
      * Set the page size.
      * 
-     * @param string $value The page size code.
+     * @param string|bool $value The page size code.
      *
      * @return Vbuck_Wkhtmltopdf_Model_Adapter
      */
-    public function setPageSize($value)
+    public function setPageSize($value = false)
     {
         if (!$this->_isPageSizeSupported($value)) {
             $this->_addError(sprintf('Page size "%s" not supported, using default.', $value));
