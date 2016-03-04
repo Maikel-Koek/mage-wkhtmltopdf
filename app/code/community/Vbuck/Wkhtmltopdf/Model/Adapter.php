@@ -123,7 +123,8 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
      */
     protected function _embedAssets()
     {
-        $head = current( ($this->_document->getElementsByTagName('head')) );
+        $head = ($this->_document->getElementsByTagName('head'));
+        $head = current( $head );
 
         foreach ($this->_assets as $asset) {
             $node = $this->_document->createDocumentFragment();
@@ -159,7 +160,7 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
     {
         $orientations = array_values( (Mage::getSingleton('pdf/system_config_source_orientation')->getAllOptions()) );
 
-        return in_array($orientation, $fonts);
+        return in_array($orientation, $orientations);
     }
 
     /**
@@ -719,7 +720,7 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
         if (!$this->_isFontSupported($font)) {
             $this->_addError(sprintf('Font "%s" not supported, using default.', $font));
 
-            $value = Mage::getStoreConfig('pdf/adapter/footer_font');
+            $font = Mage::getStoreConfig('pdf/adapter/footer_font');
         }
 
         $this->setOption('footer-font-name', $font);
@@ -784,13 +785,13 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
      */
     public function setDocumentHeaderFont($font = null)
     {
-        if (!$this->_isFontSupported($value)) {
-            $this->_addError(sprintf('Font ""%s"" not supported, using default.', $value));
+        if (!$this->_isFontSupported($font)) {
+            $this->_addError(sprintf('Font ""%s"" not supported, using default.', $font));
 
-            $value = Mage::getStoreConfig('pdf/adapter/header_font');
+            $font = Mage::getStoreConfig('pdf/adapter/header_font');
         }
 
-        $this->setOption('header-font-name', $value);
+        $this->setOption('header-font-name', $font);
 
         return $this;
     }
