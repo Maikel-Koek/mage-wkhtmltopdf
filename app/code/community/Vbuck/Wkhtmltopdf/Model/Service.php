@@ -144,7 +144,7 @@ class Vbuck_Wkhtmltopdf_Model_Service
      */
     private function _endProcess()
     {
-        $tmp  = (string) stream_get_contents($this->_pipes[0]);
+//        $tmp  = (string) stream_get_contents($this->_pipes[0]);
         $this->_lastOutput  = (string) stream_get_contents($this->_pipes[1]);
         $this->_lastError   = (string) stream_get_contents($this->_pipes[2]);
 
@@ -153,6 +153,9 @@ class Vbuck_Wkhtmltopdf_Model_Service
         }
 
         foreach ($this->_pipes as $pipe) {
+            if ($pipe == $this->_pipes[0]) {
+                continue;
+            }
             fclose($pipe);
         }
 
