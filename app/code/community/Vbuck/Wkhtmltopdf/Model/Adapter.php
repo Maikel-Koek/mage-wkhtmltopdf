@@ -30,6 +30,7 @@
 /**
  * Class declaration
  *
+ * @method $this setContent(string $value)
  * @category Class_Type_Model
  * @package  Vbuck_Wkhtmltopdf
  * @author   Rick Buczynski <me@rickbuczynski.com>
@@ -38,6 +39,8 @@
 class Vbuck_Wkhtmltopdf_Model_Adapter
     extends Varien_Object
 {
+    const CONTENT_TYPE_HTML = 1;
+    const CONTENT_TYPE_URL = 2;
 
     const ORIENTATION_LANDSCAPE = 'Landscape';
     const ORIENTATION_PORTRAIT  = 'Portrait';
@@ -65,6 +68,9 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
 
     /* @var $_service Vbuck_Wkhtmltopdf_Model_Service */
     protected $_service;
+
+    /** @var int $_contentType */
+    protected $_contentType = null;
 
     /**
      * Local constructor.
@@ -203,6 +209,7 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
     protected function _prepareDefaults()
     {
         $this->setEncoding()
+            ->setContentType()
             ->setDocumentFooterFont()
             ->setDocumentHeaderFontSize()
             ->setDocumentFooterFont()
@@ -238,13 +245,34 @@ class Vbuck_Wkhtmltopdf_Model_Adapter
     }
 
     /**
+     * @param int $type
+     * @return $this
+     */
+    public function setContentType($type = self::CONTENT_TYPE_HTML)
+    {
+        $this->_contentType = $type;
+
+        if (! in_array($type, [self::CONTENT_TYPE_HTML, self::CONTENT_TYPE_URL])) {
+            $this->_addError(sprintf('Content type "%s" not supported, using default.', $type));
+            $this->_contentType = self::CONTENT_TYPE_HTML;
+        }
+
+        return $this;
+    }
+
+    /**
      * PDF render implementation.
      * 
      * @return Vbuck_Wkhtmltopdf_Model_Adapter
      */
     protected function _render()
     {
-        @$this->_document->loadHTML($this->getContent());
+        if ($this->_contentType == self::CONTENT_TYPE_URL) {
+            @$this->_document->loadHTMLFile($this->getContent());
+        }
+        else {
+            @$this->_document->loadHTML($this->getContent());
+        }
 
         $this->_embedAssets();
 
